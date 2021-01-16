@@ -16,7 +16,7 @@ object GA {
         println("Found solution!")
         println("Generation: $gen")
         println("Genes:")
-        println("Invest " + pop.fittest?.getX() + " in company X.")
-        println("Invest " + pop.fittest?.getY() + " in company Y.")
+        println("Invest " + pop.fittest?.x + " in company X.")
+        println("Invest " + pop.fittest?.y + " in company Y.")
     }
 }
