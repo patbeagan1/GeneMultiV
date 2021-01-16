@@ -1,52 +1,39 @@
-class Population(pop: Int) {
-    var chro: Array<Chromosome?> = arrayOfNulls(pop)
-    var fitchro: Array<Chromosome?>
-    operator fun get(num: Int): Chromosome? {
-        return chro[num]
-    }
+import kotlin.math.roundToInt
 
-    operator fun set(num: Int, c: Chromosome?) {
-        chro[num] = c
-    }
+class Population(pop: Int) {
+    private var chro: Array<Chromosome?> = arrayOfNulls(pop)
+    private var fitchro: Array<Chromosome?>
 
     private fun size(): Int = chro.size
 
-    fun initialize() {
-        for (i in 0 until size()) {
-            val c = Chromosome()
-            c.generate(c)
-            set(i, c)
-        }
-    }
-
     fun populate() {
-        for (i in 0 until size()) {
-            val c = Chromosome()
-            c.generate(fitchro[Math.round(Math.random()).toInt() * (selectRate - 1)])
-            set(i, c)
+        (0 until size()).forEach { i ->
+            chro[i] = Chromosome().apply {
+                generate(fitchro[Math.random().roundToInt() * (selectRate - 1)])
+            }
         }
     }
 
-    fun selection(pop: Population?) {
-        for (u in 0 until selectRate) {
+    fun selection() {
+        (0 until selectRate).forEach { u ->
             fitchro[u] = fittest
             fittest!!.kill()
         }
     }
 
     fun mutation() {
-        for (c in chro) {
+        chro.forEach { c ->
             if (Math.random() <= mutationRate) {
-                c!!.setX(c.getX() + Math.round(Math.random() * mutationFactor).toInt())
+                c!!.setX(c.getX() + (Math.random() * mutationFactor).roundToInt())
             }
             if (Math.random() <= mutationRate) {
-                c!!.setY(c.getY() + Math.round(Math.random() * mutationFactor).toInt())
+                c!!.setY(c.getY() + (Math.random() * mutationFactor).roundToInt())
             }
             if (Math.random() <= mutationRate) {
-                c!!.setX(c.getX() - Math.round(Math.random() * mutationFactor).toInt())
+                c!!.setX(c.getX() - (Math.random() * mutationFactor).roundToInt())
             }
             if (Math.random() <= mutationRate) {
-                c!!.setY(c.getY() - Math.round(Math.random() * mutationFactor).toInt())
+                c!!.setY(c.getY() - (Math.random() * mutationFactor).roundToInt())
             }
         }
     }
@@ -76,8 +63,8 @@ class Population(pop: Int) {
         get() {
             var fittest = chro[0]
             for (i in 0 until size()) {
-                if (fittest!!.fitness <= get(i)!!.fitness) {
-                    fittest = get(i)
+                if (fittest!!.fitness <= chro[i]!!.fitness) {
+                    fittest = chro[i]
                 }
             }
             return fittest
@@ -92,5 +79,10 @@ class Population(pop: Int) {
 
     init {
         fitchro = arrayOfNulls(selectRate)
+        (0 until size()).forEach { i ->
+            chro[i] = Chromosome().apply {
+                generate(this)
+            }
+        }
     }
 }
