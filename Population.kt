@@ -1,19 +1,13 @@
 import kotlin.math.roundToInt
 
 class Population(pop: Int) {
-    private var population = Array(pop) {
-        Chromosome().apply {
-            generate(this)
-        }
-    }.toList()
+    private var population = (0 until pop).map {
+        Chromosome().apply { generateFrom(this) }
+    }
     private var survivors = Array(selectRate) { Chromosome() }
 
     fun populate() {
-        population = population.map {
-            Chromosome().apply {
-                generate(survivors[Math.random().roundToInt() * (selectRate - 1)])
-            }
-        }
+        population.forEach { it.generateFrom(survivors.random()) }
     }
 
     fun selection() {
@@ -26,35 +20,45 @@ class Population(pop: Int) {
     fun mutation() {
         population.forEach { c ->
             if (Math.random() <= mutationRate) {
-                c.x = c.x + (Math.random() * mutationFactor).roundToInt()
+                c.x += getMutationAmount()
             }
             if (Math.random() <= mutationRate) {
-                c.y = c.y + (Math.random() * mutationFactor).roundToInt()
+                c.y += getMutationAmount()
             }
             if (Math.random() <= mutationRate) {
-                c.x = c.x - (Math.random() * mutationFactor).roundToInt()
+                c.x -= getMutationAmount()
             }
             if (Math.random() <= mutationRate) {
-                c.y = c.y - (Math.random() * mutationFactor).roundToInt()
+                c.y -= getMutationAmount()
             }
         }
     }
+
+    private fun getMutationAmount() = ((Math.random() * mutationFactor)).roundToInt()
 
     fun crossover() {
         for (i in 0 until selectRate) {
             for (j in 0 until selectRate) {
                 if (Math.random() <= crossRate) {
-                    val u = survivors[i].x
-                    survivors[i].x = survivors[j].x
-                    survivors[j].x = u
+                    exchangeX(survivors[i], survivors[j])
                 }
                 if (Math.random() <= crossRate) {
-                    val u = survivors[i].y
-                    survivors[i].y = survivors[j].y
-                    survivors[j].y = u
+                    exchangeY(survivors[i], survivors[j])
                 }
             }
         }
+    }
+
+    private fun exchangeY(first: Chromosome, second: Chromosome) {
+        val u = first.y
+        first.y = second.y
+        second.y = u
+    }
+
+    private fun exchangeX(first: Chromosome, second: Chromosome) {
+        val u = first.x
+        first.x = second.x
+        second.x = u
     }
 
     fun evaluation(): Int = fittest.fitness

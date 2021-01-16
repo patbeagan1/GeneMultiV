@@ -1,6 +1,7 @@
 import kotlin.math.roundToInt
 
 class Chromosome {
+    private var _fitness = 0
     var x = 0
         set(x) {
             field = x
@@ -11,8 +12,8 @@ class Chromosome {
             field = y
             _fitness = 0
         }
-    private var _fitness = 0
-    fun generate(seed: Chromosome) {
+
+    fun generateFrom(seed: Chromosome) {
         x = seed.x + Math.random().roundToInt()
         y = seed.y + Math.random().roundToInt()
     }
@@ -20,8 +21,11 @@ class Chromosome {
     val fitness: Int
         get() {
             if (_fitness == 0) {
-                _fitness =  //3*x+4*y;
-                        -((x - 3750) * (x - 3750)) + 570 * x + -2 * ((y - 5000) * (y - 5000)) + 1500 * y + 25
+                val i0 = x - 3750
+                val i1 = y - 5000
+                val i2 = 570 * x
+                val i3 = 1500 * y + 25
+                _fitness = -(i0 * i0) + i2 + -2 * (i1 * i1) + i3
             }
             return _fitness
         }
