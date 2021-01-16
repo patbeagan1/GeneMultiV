@@ -37,16 +37,16 @@ class Population(pop: Int) {
     fun mutation() {
         for (c in chro) {
             if (Math.random() <= mutationRate) {
-                c!!.setx(c.getx() + Math.round(Math.random() * mutationFactor).toInt())
+                c!!.setX(c.getX() + Math.round(Math.random() * mutationFactor).toInt())
             }
             if (Math.random() <= mutationRate) {
-                c!!.sety(c.gety() + Math.round(Math.random() * mutationFactor).toInt())
+                c!!.setY(c.getY() + Math.round(Math.random() * mutationFactor).toInt())
             }
             if (Math.random() <= mutationRate) {
-                c!!.setx(c.getx() - Math.round(Math.random() * mutationFactor).toInt())
+                c!!.setX(c.getX() - Math.round(Math.random() * mutationFactor).toInt())
             }
             if (Math.random() <= mutationRate) {
-                c!!.sety(c.gety() - Math.round(Math.random() * mutationFactor).toInt())
+                c!!.setY(c.getY() - Math.round(Math.random() * mutationFactor).toInt())
             }
         }
     }
@@ -55,14 +55,14 @@ class Population(pop: Int) {
         for (i in 0 until selectRate) {
             for (j in 0 until selectRate) {
                 if (Math.random() <= crossRate) {
-                    val u = fitchro[i]!!.getx()
-                    fitchro[i]!!.setx(fitchro[j]!!.getx())
-                    fitchro[j]!!.setx(u)
+                    val u = fitchro[i]!!.getX()
+                    fitchro[i]!!.setX(fitchro[j]!!.getX())
+                    fitchro[j]!!.setX(u)
                 }
                 if (Math.random() <= crossRate) {
-                    val u = fitchro[i]!!.gety()
-                    fitchro[i]!!.sety(fitchro[j]!!.gety())
-                    fitchro[j]!!.sety(u)
+                    val u = fitchro[i]!!.getY()
+                    fitchro[i]!!.setY(fitchro[j]!!.getY())
+                    fitchro[j]!!.setY(u)
                 }
             }
         }
