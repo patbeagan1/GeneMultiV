@@ -64,7 +64,17 @@ class Population(pop: Int) {
     fun evaluation(): Int = fittest.fitness
 
     val fittest: Chromosome
-        get() = population.maxByOrNull { it.fitness }!!
+        get() {
+            return population.onEach {
+                if (it.fitness == 0) {
+                    val i0 = it.x - 3750
+                    val i1 = it.y - 5000
+                    val i2 = 570 * it.x
+                    val i3 = 1500 * it.y + 25
+                    it.fitness = -(i0 * i0) + i2 + -2 * (i1 * i1) + i3
+                }
+            }.maxByOrNull { it.fitness }!!
+        }
 
     companion object {
         private const val crossRate = 0.5
